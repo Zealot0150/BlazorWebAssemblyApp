@@ -1,0 +1,43 @@
+﻿@page "/"
+@using ShopModel.Dtos
+@inherits ProductsBase
+
+@if (Products == null)
+{
+	<h3 class="mb-5">Products loading </h3>
+}
+else
+{
+	<h3 class="mb-5">Products</h3>
+	var productCount = Products.Count();
+	if (productCount > 0)
+	{
+		var productsSortedByCat = from p in Products
+										group p by p.CategoryId into pOrderByCat
+										orderby pOrderByCat.Key
+										select pOrderByCat;
+
+		<div class="row mt-3">
+			@foreach(var cat in productsSortedByCat)
+			{
+				<h4>@cat.FirstOrDefault().CategoryName </h4>    @*c=>c.CategoryId == cat.Key*@
+				<ProductDisplay Products="@cat"></ProductDisplay>
+				<hr class="mb-10"/>
+			}
+		</div>
+
+
+		@*const int itmesPerRow = 4;  
+			// osorterat 4 varje rad 
+
+		var productsRowList = new List<ProductDto>();
+
+		for (int i = 0; i < Products.Count(); i++)
+		{
+			productsRowList = Products.Skip(i * itmesPerRow).Take(itmesPerRow).ToList();
+			<div class="row mt-3">
+				<ProductDisplay Products="@productsRowList"></ProductDisplay>
+			</div>
+		}*@
+	}
+}
