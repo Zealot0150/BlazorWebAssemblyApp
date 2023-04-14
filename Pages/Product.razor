@@ -3,6 +3,7 @@
 @inherits ProductsBase
 
 
+
 @if (Products == null)
 {
 	<h3 class="mb-5">Products loading </h3>
@@ -13,31 +14,28 @@ else
 	var productCount = Products.Count();
 	if (productCount > 0)
 	{
-		var productsSortedByCat = from p in Products
-										group p by p.CategoryId into pOrderByCat
-										orderby pOrderByCat.Key
-										select pOrderByCat;
+
 
 		<div class="row mt-3">
-			@foreach(var cat in productsSortedByCat)
+			@foreach (var cat in GetGroupedProductCatDtos())
 			{
-				<h4>@cat.FirstOrDefault().CategoryName </h4>    @*c=>c.CategoryId == cat.Key*@
+				<h4>@GetCategoryName(cat) </h4>
 				<ProductDisplay Products="@cat"></ProductDisplay>
 				<hr />
 			}
 		</div>
 
-		@*const int itmesPerRow = 4;  
-			// osorterat 4 varje rad 
+		@*const int itmesPerRow = 4;
+			// osorterat 4 varje rad bara för komihåg och linken.
 
-		var productsRowList = new List<ProductDto>();
+			var productsRowList = new List<ProductDto>();
 
-		for (int i = 0; i < Products.Count(); i++)
-		{
+			for (int i = 0; i < Products.Count(); i++)
+			{
 			productsRowList = Products.Skip(i * itmesPerRow).Take(itmesPerRow).ToList();
 			<div class="row mt-3">
-				<ProductDisplay Products="@productsRowList"></ProductDisplay>
+			<ProductDisplay Products="@productsRowList"></ProductDisplay>
 			</div>
-		}*@
+			}*@
 	}
 }

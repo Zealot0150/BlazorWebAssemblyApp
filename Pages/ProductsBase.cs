@@ -14,8 +14,20 @@ namespace BlazorWebAssemblyApp.Pages
         protected override async Task OnInitializedAsync()
         {
             Products = await ProductService.GetProducts();
-            
-
         }
+
+        protected IOrderedEnumerable<IGrouping<int, ProductDto>> GetGroupedProductCatDtos()
+        {
+            return from p in Products
+                                      group p by p.CategoryId into pOrderByCat
+                                      orderby pOrderByCat.Key
+                                      select pOrderByCat;
+        }
+        protected string GetCategoryName(IGrouping<int,ProductDto> groupedProductDtos)
+        {
+            return groupedProductDtos.FirstOrDefault(p => p.CategoryId == groupedProductDtos.Key).CategoryName;
+        
+        }
+
     }
 }
